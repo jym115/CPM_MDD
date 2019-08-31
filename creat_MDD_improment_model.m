@@ -5,8 +5,8 @@
 %load connectivity edges (named "all_conn_valid") and behavior data (named "score") from all subjects
 
 total= size(all_conn_valid, 1);
-    pos=ones(1,length(all_conn_valid));%positive consensus edge
-    neg=ones(1,length(all_conn_valid));%negative consensus edge
+    pos=ones(1,length(all_conn_valid));%store positive consensus edge
+    neg=ones(1,length(all_conn_valid));%store negative consensus edge
     
 YFit=zeros(1,total);
 thresh = 0.002;
