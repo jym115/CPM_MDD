@@ -16,7 +16,7 @@ for m = 1:length(thr)
     train_score = score;
     train_score(i) = [];
     
-    [r, p] = corr( train, train_score);
+    [r, p] = corr( train, train_score);% could be replaced by [r, p] = partialcorr( train, train_score,[medication/motion]) 
 
     pos_edge = find( p<thresh & r>0);
     neg_edge = find( p<thresh & r<0);
@@ -28,9 +28,16 @@ for m = 1:length(thr)
     test_neg_sum = sum(all_conn_valid(i, neg_edge));
     
     %linear regression model
-        b = regress( train_score, [ones(total-1, 1), pos_sum, neg_sum]);
+      b = regress( train_score, [ones(total-1, 1), pos_sum, neg_sum]);
         YFit(i) = [1 test_pos_sum test_neg_sum] *b;
+        
+    %%could be replaced by svr model   
+     %mdl = fitrsvm([train(:, pos_edge),train(:, neg_edge)],train_score);          
+     %YFit(i,:)=predict(mdl,[all_conn_valid(i, pos_edge),all_conn_valid(i, neg_edge)]);
+     
     end 
+       
+    
 
 [r, p] = corr( YFit', score);
 mse = sum((YFit' - score).^2) / length(score);
